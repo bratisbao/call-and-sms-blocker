@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="locations_blocklist">
+        <item>Black List</item>
+        <item>White List</item>
+    	<item>Preferences</item>
+    </string-array>
+    
+	<string-array name="locations_whitelist">
+        <item>White List</item>
+        <item>Black List</item>
+        <item>Preferences</item>
+    </string-array>
+    
+		<string-array name="locations_prefs">
+        <item>Preferences</item>
+        <item>Black List</item>
+        <item>White List</item>
+    </string-array>
+    
+</resources>

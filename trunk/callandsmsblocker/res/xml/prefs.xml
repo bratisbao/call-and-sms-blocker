@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:title="Activate"
+        android:summary="Check to activate the Services"
+        android:key="activate"
+        android:defaultValue="true"
+        />
+    <PreferenceCategory android:title="Calls" >
+        <CheckBoxPreference
+            android:dependency="activate"
+            android:defaultValue="true"
+            android:key="callsBlock"
+            android:summary="Block calls from the list"
+            android:title="Block calls" 
+            android:disableDependentsState="true">
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:dependency="activate"
+            android:defaultValue="false"
+            android:key="callsAllow"
+            android:summary="Accept calls from the list"
+            android:title="White List" />
+        <CheckBoxPreference
+            android:title="Block All Unknow Numbers"
+            android:dependency="callsBlock"
+            android:key="blockall"
+            android:summaryOn="Blocking all unknown"
+            android:summaryOff="Check to block all unknown"/>
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="SMS" >
+        <CheckBoxPreference
+            android:dependency="activate"
+            android:defaultValue="true"
+            android:key="smsBlock"
+            android:summary="Blocks SMS from the list"
+            android:title="Block SMS" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Misc" >
+
+        <EditTextPreference
+            android:key="countryCode"
+            android:title="Enter Country Code" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

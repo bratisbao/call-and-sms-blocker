@@ -22,8 +22,14 @@
             android:key="callsAllow"
             android:summary="Accept calls from the list"
             android:title="White List" />
+		<CheckBoxPreference
+            android:dependency="callsAllow"
+            android:defaultValue="true"
+            android:key="autosms"
+            android:summary="Send AutoSMS to callers other than White List when active"
+            android:title="Activate AutoSMS" />
         <CheckBoxPreference
-            android:title="Block All Unknow Numbers"
+            android:title="Block All Unknown Numbers"
             android:dependency="callsBlock"
             android:key="blockall"
             android:summaryOn="Blocking all unknown"
@@ -38,6 +44,36 @@
             android:summary="Blocks SMS from the list"
             android:title="Block SMS" >
         </CheckBoxPreference>
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="AutoSend SMS">
+        <CheckBoxPreference 
+            android:title="Save SMS"
+            android:dependency="autosms"
+            android:key="savesms"
+            android:summaryOn="AutoSend SMS will be stored in inbox"
+            android:summaryOff="AutoSend SMS will not be stored in inbox"
+            android:defaultValue="true">
+            </CheckBoxPreference>
+            
+        <CheckBoxPreference
+            android:dependency="autosms"
+            android:title="Add Signature"
+            android:key="addsign"
+            android:summary="Adds Calls and SMS Blocker Signature"
+            android:defaultValue="true">
+            
+        </CheckBoxPreference>
+        
+        <EditTextPreference
+            android:dependency="autosms"
+            android:title="Custom Message"
+            android:key="message"
+            android:defaultValue="I am busy right now and will call you latter"
+            android:summary="Set custom message">
+            
+        </EditTextPreference>
+        
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Misc" >

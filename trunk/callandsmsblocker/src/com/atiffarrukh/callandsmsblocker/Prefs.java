@@ -23,21 +23,24 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 public class Prefs extends SherlockPreferenceActivity implements ActionBar.OnNavigationListener{
 	Context context;
+	String finalMessage;
+	String defMessage;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		
 		int theme = R.style.Theme_Sherlock_ForceOverflow;
 		setTheme(theme);
 		super.onCreate(savedInstanceState);
@@ -61,6 +64,7 @@ public class Prefs extends SherlockPreferenceActivity implements ActionBar.OnNav
 		menu.add("About").setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add("Rate it").setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add("Contact").setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add("Preview SMS").setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
 		return true;
 	
@@ -92,10 +96,49 @@ public class Prefs extends SherlockPreferenceActivity implements ActionBar.OnNav
 			Intent i = new Intent(this,ContactDialog.class );
 			startActivity(i);	
 			}
+		else if(item.getTitle().equals("Preview SMS")){
+			 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			 builder.setTitle("SMS Preview");
+			 builder.setMessage(getMessage())
+			 .setPositiveButton("OK", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					dialog.dismiss();
+				}
+			});
+			 Log.d("PREFS", "Should Create Dialog Now");
+			AlertDialog d = builder.create();
+			d.show();
+		}
 
 		
 		return false;
 		
+	}
+
+	private String getMessage() {
+		// TODO Auto-generated method stub
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		boolean addSign =  prefs.getBoolean("addsign", true);
+		
+		try {
+		
+		defMessage = "I am busy right now and will call you latter.";
+		
+		finalMessage = prefs.getString("message", defMessage);
+		if(finalMessage.equals(""))
+			finalMessage = defMessage;
+		} catch (RuntimeException e) {
+			// TODO: handle exception
+			finalMessage = defMessage;
+		}
+		
+		if(addSign)
+			finalMessage += "\nSent using Calls and SMS Blocker for android.\nDownload from: https://play.google.com/store/apps/details?id=com.atiffarrukh.callandsmsblocker";
+		return finalMessage;
 	}
 
 	@Override

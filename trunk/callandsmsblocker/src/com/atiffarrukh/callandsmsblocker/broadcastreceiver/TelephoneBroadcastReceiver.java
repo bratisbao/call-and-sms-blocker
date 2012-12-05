@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.PhoneLookup;
+import android.sax.StartElementListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,13 +28,15 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 	String inNumber;
 	boolean isMatch; 
 	Cursor cursor;
-	Context context;
-
+	Context contextA;
+	Intent i;
+	
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-
+		//contextA = context;
+		contextA = context;
 		Log.d(TAG, "INF: Broadcast received.");
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -42,6 +45,9 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 		boolean activateBlackList = prefs.getBoolean("callsBlock", true); //check for blocklist
 		boolean activateWhiteList = prefs.getBoolean("callsAllow", false); //check for whitelist
 		boolean blockAll = prefs.getBoolean("blockall", false);
+		boolean sendSMS = prefs.getBoolean("autosms", true);
+		
+		
 
 		if(activateServices){
 			//if(callBlockCheck){
@@ -154,7 +160,13 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
 							//abortBroadcast();
-							Log.v(TAG,"HELLO HELLO HELLO" );
+							Log.v(TAG,"BYE BYE BYE" );
+							getAbortBroadcast();
+							if(sendSMS){
+								Log.v(TAG,"sendSMS Check" );
+								sendSMSMehtod(incomingNumber);
+								//context.stopService(i);
+								
 						}
 						else{
 							//telephonyService.answerRingingCall();
@@ -163,7 +175,11 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 							//Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
 							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
-							Log.v(TAG,"BYE BYE BYE" );
+							Log.v(TAG,"HELLO HELLO HELLO" );
+							
+								
+							}
+							
 						}
 					}
 					
@@ -230,6 +246,19 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 		
 	}
 
+
+	private void sendSMSMehtod(String incomingNumber2) {
+		// TODO Auto-generated method stub
+		i =  new Intent(contextA, SendSMS.class);
+		i.putExtra("number", incomingNumber);
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Log.d(TAG, "Starting Service");
+		contextA.startService(i);
+		//contextA.stopService(i);
+		
+	}
+
+	
 
 	public boolean contactExists(Context context, String number) {
 		/// number is the phone number

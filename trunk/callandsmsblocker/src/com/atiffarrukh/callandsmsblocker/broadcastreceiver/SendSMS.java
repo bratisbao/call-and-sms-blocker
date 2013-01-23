@@ -122,6 +122,7 @@ public class SendSMS extends Service{
 							Toast.LENGTH_SHORT).show();
 					break;
 				}
+				//arg0.unregisterReceiver(arg0);
 			}
 		}, new IntentFilter(SENT));
 
@@ -140,6 +141,7 @@ public class SendSMS extends Service{
 							Toast.LENGTH_SHORT).show();
 					break;                        
 				}
+				//arg0.unregisterReceiver(this);
 			}
 		}, new IntentFilter(DELIVERED));        
 

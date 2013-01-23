@@ -22,7 +22,7 @@ import android.view.KeyEvent;
 public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 	String TAG = "My Tag"; //Used for TAG in LOG
 	String incomingNumber = " ??? "; // Used for getting incoming number
-	 // Used to get the incoming Number
+	// Used to get the incoming Number
 	//String incno1 = "15555215556";
 	int k = 0;
 	String inNumber;
@@ -30,7 +30,7 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 	Cursor cursor;
 	Context contextA;
 	Intent i;
-	
+
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -46,11 +46,12 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 		boolean activateWhiteList = prefs.getBoolean("callsAllow", false); //check for whitelist
 		boolean blockAll = prefs.getBoolean("blockall", false);
 		boolean sendSMS = prefs.getBoolean("autosms", true);
-		
-		
 
-		if(activateServices){
-			//if(callBlockCheck){
+		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+
+			if(activateServices){
+				//if(callBlockCheck){
 
 
 				try{
@@ -66,7 +67,7 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 					incomingNumber = bundle.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
 					Log.v(TAG,incomingNumber );
 					//Log.v(TAG,incno1 );
-					
+
 					if(blockAll){
 						if(!contactExists(context,incomingNumber)){
 							telephonyService = (ITelephony) m.invoke(tManager);
@@ -111,19 +112,19 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
 							//abortBroadcast();
-							Log.v(TAG,"BYE BYE BYE" );
+							Log.v(TAG,"Black List BYE" );
 						}
 						else{
 							//telephonyService.answerRingingCall();
 							Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
 							i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
-							Log.v(TAG,"HELLO HELLO HELLO" );
+							Log.v(TAG,"Black List HELLO" );
 						}
 					}
-					
+
 					/***************************************** WHITELIST CHECK  ****************************************/
-					if(activateWhiteList){
+					if(activateWhiteList && !activateBlackList){
 						Log.d(TAG, "Opening Whitelist Database...");
 						WhiteListDB ourDatabase = new WhiteListDB(context);
 						ourDatabase.Open();
@@ -151,7 +152,7 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 						//}
 						//}
 						Log.d(TAG, "The Incoming Number is " + inNumber);
-						
+
 						if ( inNumber == null) {
 							telephonyService = (ITelephony) m.invoke(tManager);
 							//telephonyService.silenceRinger();
@@ -160,30 +161,31 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
 							//abortBroadcast();
-							Log.v(TAG,"BYE BYE BYE" );
+							Log.v(TAG,"Whitelist BYE" );
 							getAbortBroadcast();
 							if(sendSMS){
 								Log.v(TAG,"sendSMS Check" );
 								sendSMSMehtod(incomingNumber);
 								//context.stopService(i);
-								
-						}
-						else{
-							//telephonyService.answerRingingCall();
-							//telephonyService = (ITelephony) m.invoke(tManager);
-							//telephonyService.endCall();
-							//Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
-							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
-							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
-							Log.v(TAG,"HELLO HELLO HELLO" );
-							
-								
+
 							}
-							
 						}
+							else{
+								//telephonyService.answerRingingCall();
+								//telephonyService = (ITelephony) m.invoke(tManager);
+								//telephonyService.endCall();
+								//Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
+								//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
+								//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
+								Log.v(TAG,"White List HELLO" );
+
+
+							}
+
+						
 					}
-					
-					
+
+
 					/***************************************** BOTH LIST CHECK  ****************************************/
 					if(activateBlackList && activateWhiteList){
 						Log.d(TAG, "Opening Whitelist Database...");
@@ -213,7 +215,7 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 						//}
 						//}
 						Log.d(TAG, "The Incoming Number is " + inNumber);
-						
+
 						if ( inNumber == null) {
 							telephonyService = (ITelephony) m.invoke(tManager);
 							//telephonyService.silenceRinger();
@@ -222,7 +224,7 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
 							//abortBroadcast();
-							Log.v(TAG,"HELLO HELLO HELLO" );
+							Log.v(TAG,"Both List HELLO" );
 						}
 						else{
 							//telephonyService.answerRingingCall();
@@ -231,34 +233,42 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 							//Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
 							//i.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_HEADSETHOOK));
 							//context.sendOrderedBroadcast(i, "android.permission.CALL_PRIVILEGED");
-							Log.v(TAG,"BYE BYE BYE" );
+							Log.v(TAG,"Both List BYE" );
 						}
 					}
-					
+
 				}catch(Exception e){
 					e.printStackTrace();
 					Log.e(TAG,
 							"FATAL ERROR: could not connect to telephony subsystem");
 					Log.e(TAG, "Exception object: " + e);
 				}
-			//}
+				//}
+			}
 		}
-		
 	}
 
 
 	private void sendSMSMehtod(String incomingNumber2) {
 		// TODO Auto-generated method stub
-		i =  new Intent(contextA, SendSMS.class);
-		i.putExtra("number", incomingNumber);
-		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		Log.d(TAG, "Starting Service");
-		contextA.startService(i);
-		//contextA.stopService(i);
+		try {
+			Log.d(TAG, "sendSMSMethod");
+			i =  new Intent(contextA, SendSMS.class);
+			i.putExtra("number", incomingNumber);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Log.d(TAG, "Starting SendSMS Service");
+			contextA.startService(i);
+			contextA.stopService(i);
+			//contextA.stopService(i);
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.d(TAG, "Error: " + e);
+		}
 		
+
 	}
 
-	
+
 
 	public boolean contactExists(Context context, String number) {
 		/// number is the phone number

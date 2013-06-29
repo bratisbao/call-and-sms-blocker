@@ -34,6 +34,13 @@
             android:key="blockall"
             android:summaryOn="Blocking all unknown"
             android:summaryOff="Check to block all unknown"/>
+        <CheckBoxPreference
+            android:title="Block private numbers"
+            android:dependency="activate"
+            android:defaultValue="false"
+            android:key="private"
+            android:summaryOn="Blocking all private numbers"
+            android:summaryOff="Check to block all private numbers"/>
     </PreferenceCategory>
     
     <PreferenceCategory android:title="SMS" >
@@ -77,7 +84,13 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Misc" >
-
+		<CheckBoxPreference
+            android:title="Show by numbers"
+            android:key="number"
+            android:summary="Show list by numbers"
+            android:defaultValue="true">
+            
+        </CheckBoxPreference>
         <EditTextPreference
             android:key="countryCode"
             android:title="Enter Country Code" />

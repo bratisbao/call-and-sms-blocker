@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <Button
-        android:id="@+id/enterButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add number"
-        android:width="500dip" />
-    
-    <Button 
-        android:id="@+id/peopleButton"
+
+   <Button
+        android:id="@+id/editBt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Select from people"/>
-	
+        android:text="Edit"         />
+
+    <Button
+        android:id="@+id/deleteBt"
+        android:layout_marginTop="4dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete"/>
+
 </LinearLayout>

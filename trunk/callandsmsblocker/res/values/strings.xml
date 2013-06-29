@@ -12,15 +12,19 @@
     <string name="how_to_text">1. To turn off the services just uncheck the Activate option
         					   \n2. Check the Block Calls to block all calls that are in the list
         					   \n3. Check the White List to only get calls from the White list
-        					   \n4. Check the Block All Unknown Calls to block all calls that are not in phone book
+        					   \n4. Check the Block All Unkown Calls to block all calls that are not in phone book
         					   \n5. Check the Block SMS to block all SMS from the Black List Numbers
         					   \n6. Inorder to block SMS please enter your contry without "+" eg 92
         					   \n7. To only block SMS from the black list and want to receive call, just check the Block SMS;similarly to block calls and want to get SMS just check the Block Calls and leave Block Check unchecked
-        					   \n8. Didn\'t find the answer you looking for? Please, do email me. 
-        					   \n9. AutoSMS send SMS to caller not in the White List, when White List is activated</string>
+        					   \n8. Didnt find the answer you looking for? Please, do email me. </string>
  	
     <string name="about_text">I have started this application as a simple semester project. But now I want to make this app as good as possible.
         					  If you want to see any feature in this application, please dont hesistate to contact me on my email. I will add 
-        					  those features. If you like this application please Rate it.</string>					   
+        					  those features. If you like this application please Rate it.</string>
+	<string name="warning_text">THIS IS IMPORTANT!
+	    						\nIf you are an old user then please note that inorder to not to lose previous data this update has updated the database, rather than creating new one. Please edit all your contact and add a name to it.
+	    						\nAfter adding name Go to Preferences in the Misc section de-select By Number. Restart the app you, now you are able to add contacts with name.
+	    						\nIF you are a new user just to go to Preferences in the Misc section de-select By Number.
+	    						</string>        					  					   
 
 </resources>

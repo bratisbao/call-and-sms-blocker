@@ -17,13 +17,16 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.tjeannin.apprate.AppRate;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.LauncherActivity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -72,16 +75,42 @@ public class MainActivity extends SherlockListActivity implements
 	static final int numberEntryDialogID = 1;
 	static final int editNumberDialogID = 2;
 	private static final int PICK_CONTACT = 0;
+	
+	private int lunchCount;
+	
 	Long rowID;
 	public static final String GAME_PREFERENCES = "GamePrefs";		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		//RateMe
+		AlertDialog.Builder builder = new AlertDialog.Builder(this)
+	    .setTitle("Rate this app")
+	    .setMessage("If Call and SMS blocker helped you to block unwanted Calls or SMS, please take moment to " +
+	    		"rate it. Thanks for your support.")
+	    .setPositiveButton("Rate it!", null)
+	    .setNegativeButton("No thanks", null)
+	    .setNeutralButton("Remind me later", null);
+		
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		lunchCount = prefs.getInt("count", 0) + 1;
+		prefs.edit().putInt("count", lunchCount).commit();
+		
+		Log.d("Launches", ""+lunchCount % 3);
+		if (lunchCount % 5 == 0) {
+			new AppRate(this)
+		    .setCustomDialog(builder)
+		    //.setMinDaysUntilPrompt(7)
+		    //.setMinLaunchesUntilPrompt(2)
+		    .init();
+		}
+		
+		////RateMe
 		
 		//Google Ads
 				AdView adView = (AdView)this.findViewById(R.id.adView);
-			    adView.loadAd(new AdRequest());//
+			    adView.loadAd(new AdRequest());//Google Ads
 		
 		 SharedPreferences settings = getSharedPreferences(GAME_PREFERENCES, MODE_PRIVATE);
 	     
@@ -565,5 +594,11 @@ public class MainActivity extends SherlockListActivity implements
 		}
 
 		return true;
+	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		this.finish();
 	}
 }

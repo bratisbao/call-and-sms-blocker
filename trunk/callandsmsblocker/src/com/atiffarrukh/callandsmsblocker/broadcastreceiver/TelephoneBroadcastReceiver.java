@@ -65,13 +65,21 @@ public class TelephoneBroadcastReceiver extends BroadcastReceiver {
 					Bundle bundle = intent.getExtras();
 
 					incomingNumber = bundle.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-					Log.v(TAG,incomingNumber );
+					Log.d("Incoming Number",""+incomingNumber );
 					//Log.v(TAG,incno1 );
 					/**************************************** BLOCK PRIVATE NUMBERS ************************************/
 					if (privateNumbers) {
-						if (Integer.parseInt(incomingNumber) < 0) {
+						if (/*Integer.parseInt(incomingNumber) < 0 ||*/ incomingNumber == null) {
+							Log.d("Incoming Number","PRIVATE" );
 							telephonyService = (ITelephony) m.invoke(tManager);
 							telephonyService.endCall();
+							return;
+						}
+						if (Integer.parseInt(incomingNumber) < 0) {
+							Log.d("Incoming Number","PRIVATE" );
+							telephonyService = (ITelephony) m.invoke(tManager);
+							telephonyService.endCall();
+							return;
 						}
 					}
 					

@@ -62,7 +62,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 					Log.d(TAG, "SMS sent by " + contact );
 					contact = contact.substring(3);
 					contact = "0" + contact;
-					Log.d(TAG, "The CONTACT is " + gotNumber);
+					Log.d(TAG, "The CONTACT is " + contact);
 					cursor = ourDatabase.searchNumber(contact);
 					if(cursor == null){
 						Log.d(TAG, "EMPTY CURSOR");

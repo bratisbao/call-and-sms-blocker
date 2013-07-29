@@ -460,7 +460,7 @@ public class MainActivity extends SherlockListActivity implements
                                         Log.e("Phone no & name :***: ", name + " : " + contactId);
 
                                 }
-
+                                contactId = contactId.replaceAll("\\D", "");	
                                 Log.d("Contact Id", contactId + " ");
 
                                 rowID = enterValues.createRow(enterValues.createContentValues(

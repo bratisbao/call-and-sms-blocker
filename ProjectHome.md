@@ -1,0 +1,1 @@
+A simple android application to block calls and sms, create blacklist and whitelist.
